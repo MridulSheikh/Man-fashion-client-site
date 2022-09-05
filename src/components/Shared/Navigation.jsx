@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 
 function Navigation() {
     const [down, setDown] = useState(false);
-    const {user, singinWithGoogle, logout} = useAuth();
+    const {user, logout} = useAuth();
 
     const controler = () => {
         if (window.scrollY > 100) {
@@ -19,7 +19,7 @@ function Navigation() {
         window.addEventListener('scroll', controler)
     }, [])
     return (
-        <div className={`navbar sticky top-0 bg-white z-50 py-3 xl:px-10 ease-in-out duration-300 ${down && "drop-shadow-md bg-cyan-100"}`}>
+        <div className={`navbar bg-white sticky top-0 z-50 py-3 xl:px-10 ease-in-out duration-200 ${down && "drop-shadow-md bg-cyan-100"}`}>
             <div className="flex-1">
                 <a href="/#">
                     <p className="font-bold text-2xl">Men For Fashion</p>
@@ -63,12 +63,14 @@ function Navigation() {
                                 <span className="badge">{user.displayName}</span>
                             </a>
                         </li>
-                        <li><a>Settings</a></li>
+                        <li><a>Dashboard</a></li>
                         <li onClick={logout}><a>Logout</a></li>
                     </ul>
                 </div>
                 :
-                <button onClick={singinWithGoogle} className='btn font-sans'>login</button>
+                <Link to="/login">
+                  <button className='btn font-sans'>login</button>
+                </Link>
                 }
             </div>
         </div>
