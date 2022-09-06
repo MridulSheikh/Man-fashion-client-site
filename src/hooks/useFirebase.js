@@ -1,12 +1,16 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
+import axios from "axios";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth";
 import { useEffect, useState } from "react";
+import { set } from "react-hook-form";
 import firebaseInitialize from "../Firebase/firebase.init";
 
 firebaseInitialize()
 
 const useFirebase = () =>{
 
-const [user, setUser] = useState({})
+const [user, setUser] = useState({});
+const [error, setError] = useState("");
+const [isLoading, setIsLoading] = useState(false);
 
 //google probider
 const Googleprovider = new GoogleAuthProvider();
@@ -28,13 +32,7 @@ const singinWithGoogle = () => {
         // ...
       }).catch((error) => {
         // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(error)
+        setError(error.code)
         // ...
       });
 }
@@ -55,10 +53,71 @@ useEffect(()=>{
   })
 },[])
 
+//password authentication
+const singUpwithpass = (email, password, name, address) =>{
+  setError(false)
+  setIsLoading(true)
+  createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    if(userCredential.user){
+      saveUser(name, email, address)
+    }
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setError(errorMessage)
+  })
+  .finally(()=>setIsLoading(false))
+}
+
+const singInwitpass = (email, password) =>{
+  setError(false)
+  setIsLoading(true)
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    setUser(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setError(errorCode)
+    // ..
+  })
+  .finally(()=>setIsLoading(false))
+}
+
+//save user inforamation
+const saveUser = (name, email, address) =>{
+  const url = "http://localhost:5000/api/v1/user"
+  axios.post(url, {
+    displayName : name,
+    email : email,
+    address : address,
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
+
+
+
 return{
     singinWithGoogle,
     user,
-    logout
+    logout,
+    singUpwithpass,
+    singInwitpass,
+    error,
+    isLoading
 }
 }
 
