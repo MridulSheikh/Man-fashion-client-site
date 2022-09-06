@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import {MdCloudUpload} from 'react-icons/md'
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from 'react';
 
 interface IFormInput {
     email: string;
@@ -13,10 +14,18 @@ interface IFormInput {
 
 function Singup() {
     const { register, handleSubmit, reset, formState:{errors} } = useForm<IFormInput>();
+    const [profileimg, setProfileimg] = useState<Blob | MediaSource>();
     const onSubmit: SubmitHandler<IFormInput> = data => {
         console.log(data);
         reset();
     }
+
+    const imgHandler = (e: any) =>{
+      if(e.target.files.length !== 0){
+        setProfileimg(e.target.files[0])
+      }
+    }
+
     const {singinWithGoogle} = useAuth();
   return (
     <div className="container mx-auto">
@@ -24,9 +33,12 @@ function Singup() {
             <div className="p-5 mt-5 shadow-md ">
               <h1 className="text-2xl font-bold text-gray-500 font-sans">Singup</h1>
               <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
-              <div className='relative gorup'>
-                  <input className="font-sans w-full opacity-0" accept='image/*' type="file" {...register("files")} />
-                  <label htmlFor='upload-button' className='flex font-sans px-4 rounded-md gorup-hover:bg-black group-hover:cursor-pointer group-hover:text-white border-2 border-black text-black py-1 text-center absolute top-0 -z-10'><MdCloudUpload className='text-2xl mr-2' /> Chose a Photo</label>
+                <div className='w-full'>
+                  <img src={profileimg ? URL.createObjectURL(profileimg!) : `https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg`} alt="" className="w-20 h-20 text-center my-3 rounded-full mx-auto" />
+                </div>
+              <div className='relative w-full'>
+                  <input className="font-sans w-full opacity-0 cursor-pointer" accept='image/*' type="file" onChange={imgHandler}  />
+                  <label htmlFor='upload-button' className='flex font-sans px-4 rounded-md gorup-hover:bg-black group-hover:cursor-pointer group-hover:text-white border-2 border-black text-black py-1 text-center absolute top-0 -z-10 ml-16'><MdCloudUpload className='text-2xl mr-2' /> Chose a Photo</label>
                 </div>
                 <div className='mt-5'>
                   <span className="font-sans">Email*</span><br />
