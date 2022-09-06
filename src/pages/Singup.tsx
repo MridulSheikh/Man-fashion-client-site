@@ -36,9 +36,9 @@ function Singup() {
                 <div className='w-full'>
                   <img src={profileimg ? URL.createObjectURL(profileimg!) : `https://icon-library.com/images/no-user-image-icon/no-user-image-icon-23.jpg`} alt="" className="w-20 h-20 text-center my-3 rounded-full mx-auto" />
                 </div>
-              <div className='relative w-full'>
+              <div className='relative w-full flex justify-center'>
                   <input className="font-sans w-full opacity-0 cursor-pointer" accept='image/*' type="file" onChange={imgHandler}  />
-                  <label htmlFor='upload-button' className='flex font-sans px-4 rounded-md gorup-hover:bg-black group-hover:cursor-pointer group-hover:text-white border-2 border-black text-black py-1 text-center absolute top-0 -z-10 ml-16'><MdCloudUpload className='text-2xl mr-2' /> Chose a Photo</label>
+                  <label htmlFor='upload-button' className='flex font-sans px-4 rounded-md gorup-hover:bg-black group-hover:cursor-pointer group-hover:text-white border-2 border-black text-black py-1 text-center absolute top-0 -z-10'><MdCloudUpload className='text-2xl mr-2' /> Chose a Photo</label>
                 </div>
                 <div className='mt-5'>
                   <span className="font-sans">Email*</span><br />
