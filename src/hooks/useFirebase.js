@@ -1,7 +1,6 @@
 import axios from "axios";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth";
 import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
 import firebaseInitialize from "../Firebase/firebase.init";
 
 firebaseInitialize()
@@ -11,6 +10,7 @@ const useFirebase = () =>{
 const [user, setUser] = useState({});
 const [error, setError] = useState("");
 const [isLoading, setIsLoading] = useState(false);
+const [loacluser, setLocaluser] = useState({});
 
 //google probider
 const Googleprovider = new GoogleAuthProvider();
@@ -26,9 +26,11 @@ const singinWithGoogle = () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const data = result.user;
-        //set user on userstate
-        console.log(result)
-        setUser(data);
+        const isReg = getUser(data.email)
+        if(isReg == null){
+          saveUser(data.displayName, data.email, null, data.photoURL)
+        }
+        getUser(data.email)
         // ...
       }).catch((error) => {
         // Handle Errors here.
@@ -39,7 +41,7 @@ const singinWithGoogle = () => {
 
 const logout = () => {
   signOut(auth).then(() => {
-    setUser({});
+    setLocaluser({});
   }).catch((error) => {
     // An error happened.
   });
@@ -48,20 +50,20 @@ const logout = () => {
 useEffect(()=>{
   onAuthStateChanged(auth, user =>{
       if (user) {
-          setUser(user)
+          getUser(user.email)
         } 
   })
 },[])
 
 //password authentication
-const singUpwithpass = (email, password, name, address) =>{
+const singUpwithpass = async (email, password, name, address, img) =>{
   setError(false)
   setIsLoading(true)
   createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
+  .then( async (userCredential) => {
     // Signed in 
     if(userCredential.user){
-      saveUser(name, email, address)
+      saveUser(name, email, address, img)
     }
     // ...
   })
@@ -80,7 +82,7 @@ const singInwitpass = (email, password) =>{
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    setUser(user)
+    getUser(user.email)
     // ...
   })
   .catch((error) => {
@@ -93,21 +95,64 @@ const singInwitpass = (email, password) =>{
 }
 
 //save user inforamation
-const saveUser = (name, email, address) =>{
-  const url = "http://localhost:5000/api/v1/user"
-  axios.post(url, {
-    displayName : name,
-    email : email,
-    address : address,
+const saveUser = (name, email, address, photo) =>{
+  const imgbbkey = "e09f83c95842d0cbd98bf818d814146f";
+  const formData = new FormData();
+    formData.append('image', photo);
+  const uri = `https://api.imgbb.com/1/upload?key=${imgbbkey}`
+  fetch(uri, {
+    method : "POST",
+    body : formData
   })
-  .then(function (response) {
-    console.log(response);
+  .then(res => res.json())
+  .then(result => {
+    const url = "http://localhost:5000/api/v1/user"
+    axios.post(url, {
+      displayName : name,
+      email : email,
+      address : address,
+      imgUrl : result.data.url,
+    })
+    .then(function (response) {
+      getUser(email)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   })
-  .catch(function (error) {
-    console.log(error);
-  });
 }
 
+//get user
+  const getUser = (email) => {
+    axios.get(`http://localhost:5000/api/v1/user/${email}`)
+    .then(function (response) {
+      // handle success
+      setLocaluser(response.data);
+    })
+    .catch(function (error) {
+      // handle error
+      setError(error.message);
+    })
+  }
+  
+
+
+
+// //set userimg
+// const uploadimg = (photo) => {
+//   const imgbbkey = "e09f83c95842d0cbd98bf818d814146f";
+//   const formData = new FormData();
+//     formData.append('image', photo);
+//   const uri = `https://api.imgbb.com/1/upload?key=${imgbbkey}`
+//   fetch(uri, {
+//     method : "POST",
+//     body : formData
+//   })
+//   .then(res => res.json())
+//   .then(result => {
+//         setPhoto(result.data.url)
+//   })
+// }
 
 
 return{
@@ -117,7 +162,8 @@ return{
     singUpwithpass,
     singInwitpass,
     error,
-    isLoading
+    isLoading,
+    loacluser
 }
 }
 

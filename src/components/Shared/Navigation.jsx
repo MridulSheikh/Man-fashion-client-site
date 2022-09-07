@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 
 function Navigation() {
     const [down, setDown] = useState(false);
-    const {user, logout} = useAuth();
+    const {loacluser, logout} = useAuth();
 
     const controler = () => {
         if (window.scrollY > 100) {
@@ -50,17 +50,17 @@ function Navigation() {
                     </div>
                 </div>
                 {
-                    user.email ? 
+                    loacluser?.email ? 
                     <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
-                            <img src={user.photoURL} alt="profile img"/>
+                            <img src={loacluser?.imgUrl} alt="profile img"/>
                         </div>
                     </label>
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         <li>
                             <a className="justify-between">
-                                <span className="badge">{user.displayName}</span>
+                                <span className="badge">{loacluser?.displayName}</span>
                             </a>
                         </li>
                         <li><a>Dashboard</a></li>
