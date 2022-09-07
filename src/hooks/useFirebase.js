@@ -1,4 +1,5 @@
 import axios from "axios";
+import imageCompression from "browser-image-compression";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth";
 import { useEffect, useState } from "react";
 import firebaseInitialize from "../Firebase/firebase.init";
@@ -88,38 +89,58 @@ const singInwitpass = (email, password) =>{
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-    setError(errorCode)
+    setError(errorMessage)
     // ..
   })
   .finally(()=>setIsLoading(false))
 }
 
 //save user inforamation
-const saveUser = (name, email, address, photo) =>{
-  const imgbbkey = "e09f83c95842d0cbd98bf818d814146f";
-  const formData = new FormData();
-    formData.append('image', photo);
-  const uri = `https://api.imgbb.com/1/upload?key=${imgbbkey}`
-  fetch(uri, {
-    method : "POST",
-    body : formData
-  })
-  .then(res => res.json())
-  .then(result => {
-    const url = "http://localhost:5000/api/v1/user"
-    axios.post(url, {
-      displayName : name,
-      email : email,
-      address : address,
-      imgUrl : result.data.url,
+const saveUser = async (name, email, address, photo) =>{
+
+  // console.log('originalFile instanceof Blob', photo instanceof Blob); // true
+  // console.log(`originalFile size ${photo.size / 1024 / 1024} MB`);
+
+  const options = {
+    maxSizeMB: 2,
+    maxWidthOrHeight: 400,
+    useWebWorker: true
+  }
+  try {
+    const compressedFile = await imageCompression(photo, options);
+    // console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+    // console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+    //save user
+    const imgbbkey = "e09f83c95842d0cbd98bf818d814146f";
+    const formData = new FormData();
+    formData.append('image', compressedFile);
+    const uri = `https://api.imgbb.com/1/upload?key=${imgbbkey}`
+    fetch(uri, {
+      method : "POST",
+      body : formData
     })
-    .then(function (response) {
-      getUser(email)
+    .then(res => res.json())
+    .then(result => {
+      const url = "http://localhost:5000/api/v1/user"
+      axios.post(url, {
+        displayName : name,
+        email : email,
+        address : address,
+        imgUrl : result.data.url,
+      })
+      .then(function (response) {
+        getUser(email)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     })
-    .catch(function (error) {
-      console.log(error);
-    });
-  })
+
+
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 //get user
@@ -135,7 +156,27 @@ const saveUser = (name, email, address, photo) =>{
     })
   }
   
+// //img resize
+// async function handleImageUpload(img) {
+//   console.log('originalFile instanceof Blob', img instanceof Blob); // true
+//   console.log(`originalFile size ${img.size / 1024 / 1024} MB`);
 
+//   const options = {
+//     maxSizeMB: 2,
+//     maxWidthOrHeight: 800,
+//     useWebWorker: true
+//   }
+//   try {
+//     const compressedFile = await imageCompression(imageFile, options);
+//     console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+//     console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+    
+//   } catch (error) {
+//     console.log(error);
+//   }
+
+// }
 
 
 // //set userimg

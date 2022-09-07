@@ -28,10 +28,6 @@ function Singup() {
       setProfileimg(e.target.files[0])
     }
   }
-
-  
-
-  const { singinWithGoogle } = useAuth();
   return (
     <>
       <div className="container mx-auto">
@@ -82,7 +78,7 @@ function Singup() {
               <span className='text-red-500 font-sans'>{error}</span>
               <button className="btn  btn-sm w-full font-sans mt-5">Singup</button>
             </form>
-            <button onClick={singinWithGoogle} className="btn btn-info text-white  btn-sm w-full font-sans mt-3">Login With Google</button>
+            {/* <button onClick={singinWithGoogle} className="btn btn-info text-white  btn-sm w-full font-sans mt-3">Login With Google</button> */}
             <Link to="/login">
               <button className="btn btn-outline btn-sm w-full font-sans mt-3">singin</button>
             </Link>
