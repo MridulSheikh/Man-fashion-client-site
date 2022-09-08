@@ -204,6 +204,7 @@ return{
     singInwitpass,
     error,
     isLoading,
+    setIsLoading,
     loacluser
 }
 }

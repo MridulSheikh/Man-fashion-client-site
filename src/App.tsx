@@ -5,6 +5,7 @@ import Footer from "./components/Shared/Footer";
 import Login from "./pages/Login";
 import Navigation from "./components/Shared/Navigation";
 import Singup from "./pages/Singup";
+import Shop from "./pages/Shop";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/singup" element={<Singup />} />
+        <Route path="/shop" element={<Shop />} />
       </Routes>
       <Footer />
     </div>
