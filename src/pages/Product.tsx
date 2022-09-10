@@ -96,7 +96,7 @@ function Product() {
                             <p className='font-sans'>quantity : {quantity}</p>
                             <p className='font-sans'>Total : ${total}</p>
                         </div>
-                      <button onClick={() => addtodatabase(id, quantity, total, size)} className='btn btn-primary btn-sm font-sans'> Add to cart</button>
+                      <button onClick={() => addtodatabase(id, quantity, total, size, product.productImg, product.productName)} className='btn btn-primary btn-sm font-sans'> Add to cart</button>
               </div>
             </div>
           </div>
