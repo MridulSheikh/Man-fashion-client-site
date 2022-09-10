@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Blocks, Radio } from 'react-loader-spinner'
 import ShopCard from '../components/Shop/ShopCard'
 import useAuth from '../hooks/useAuth'
-import ReactPaginate from 'react-paginate';
+import {TbPlayerTrackNext} from 'react-icons/tb'
 
 function Shop() {
     const [product, setProduct] = useState<any[]>([])
@@ -48,11 +48,11 @@ function Shop() {
             {
                 isLoading ?
                     <div className=' py-48 w-screen flex justify-center items-center '>
-                        <Radio
+                        <Blocks
                             visible={true}
                             height="80"
                             width="80"
-                            colors={['#8C5E58', '#2B061E', '#361134']}
+                            color= "#8D949E"
                             ariaLabel="radio-loading"
                             wrapperStyle={{}}
                             wrapperClass="radio-wrapper"
@@ -73,9 +73,9 @@ function Shop() {
                         </div>
                         <div className='mt-10 flex justify-center'>
                             <div className='flex gap-5'>
-                                <button onClick={() => handlePaginate(0)} className='btn font-sans'>previous</button>
-                                <p className='font-sans text-3xl text-gray-400'>{page}/{Math.ceil(length/20)}</p>
-                                <button onClick={() => handlePaginate(1)} className='btn font-sans'>next</button>
+                                <button onClick={() => handlePaginate(0)} className='btn btn-sm font-sans'><TbPlayerTrackNext className=' rotate-180 ' /></button>
+                                <p className='font-sans text-xl text-gray-400'>{page}/{Math.ceil(length/20)}</p>
+                                <button onClick={() => handlePaginate(1)} className='btn btn-sm font-sans'><TbPlayerTrackNext /></button>
                             </div>
                         </div>
                     </div>

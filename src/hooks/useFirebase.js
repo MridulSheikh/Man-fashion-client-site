@@ -8,7 +8,6 @@ firebaseInitialize()
 
 const useFirebase = () =>{
 
-const [user, setUser] = useState({});
 const [error, setError] = useState("");
 const [isLoading, setIsLoading] = useState(false);
 const [loacluser, setLocaluser] = useState({});
@@ -83,7 +82,7 @@ const singInwitpass = (email, password) =>{
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    getUser(user.email)
+    getUser(email)
     // ...
   })
   .catch((error) => {
@@ -125,7 +124,7 @@ const saveUser = async (name, email, address, photo) =>{
       const url = "http://localhost:5000/api/v1/user"
       axios.post(url, {
         displayName : name,
-        email : email,
+        email : email.toLowerCase(),
         address : address,
         imgUrl : result.data.url,
       })
@@ -145,7 +144,7 @@ const saveUser = async (name, email, address, photo) =>{
 
 //get user
   const getUser = (email) => {
-    axios.get(`http://localhost:5000/api/v1/user/${email}`)
+    axios.get(`http://localhost:5000/api/v1/user/${email.toLowerCase()}`)
     .then(function (response) {
       // handle success
       setLocaluser(response.data);
@@ -198,14 +197,13 @@ const saveUser = async (name, email, address, photo) =>{
 
 return{
     singinWithGoogle,
-    user,
     logout,
     singUpwithpass,
     singInwitpass,
     error,
     isLoading,
     setIsLoading,
-    loacluser
+    loacluser,
 }
 }
 

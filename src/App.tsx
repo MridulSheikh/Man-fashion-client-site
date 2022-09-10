@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Navigation from "./components/Shared/Navigation";
 import Singup from "./pages/Singup";
 import Shop from "./pages/Shop";
+import Product from "./pages/Product";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/singup" element={<Singup />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/:id" element={<Product />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
     </div>
