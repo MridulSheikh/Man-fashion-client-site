@@ -8,6 +8,7 @@ import Singup from "./pages/Singup";
 import Shop from "./pages/Shop";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
+import Shpping from "./pages/Shpping";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop/:id" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/shipping" element={<Shpping />} />
       </Routes>
       <Footer />
     </div>
