@@ -1,4 +1,5 @@
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import axios from 'axios';
 import {useEffect, useState} from "react"
 import useAuth from '../hooks/useAuth';
 
@@ -10,6 +11,7 @@ function ChekoutForms() {
     const [address, setAddress] = useState<string>();
     const [zip, setZip] = useState<string>();
     const [ClientSecreet, setClientSecreet] = useState<string>();
+    const [stloading, setstLoading] = useState<boolean>(false);
 
     const [cardError, setCardError] = useState<string>('');
     const [success, setSuccess] = useState<string>('');
@@ -24,7 +26,7 @@ function ChekoutForms() {
     })
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
+        setstLoading(true)
         e.preventDefault();
         
         if (!stripe || !elements) {
@@ -65,11 +67,28 @@ function ChekoutForms() {
 
         if(intentError){
             setCardError(intentError?.message!)
+            setstLoading(false)
         }
         else{
             setCardError(' ')
             setSuccess('your payment is complited')
             setTransitionId(paymentIntent.id)
+            axios.post("http://localhost:5000/api/v1/order",{
+                email: loacluser.displayName,
+                user_id: loacluser._id,
+                total_amount: total,
+                mobile : number,
+                address: address,
+                zip : zip,
+                product: item,
+            })
+            .then(function (response) {
+                localStorage.setItem("cart",JSON.stringify([]))
+              })
+              .catch(function (error) {
+                // console.log(error);
+              })
+              .finally(()=>setstLoading(false))
         }
     }
 
@@ -128,6 +147,9 @@ function ChekoutForms() {
             }
             {
                 success && <p className='py-5 text-green-700 font-sans'>{success} yout transition id : <span className='font-bold font-sans text-yellow-500'>{transitionId}</span></p>
+            }
+            {
+                stloading &&  <p className='py-5 text-yellow-700 font-sans'>please wait...</p>
             }
             <input type="submit" className='font-sans btn btn-sm w-full mt-5' disabled={!stripe || !ClientSecreet}/>
         </form>

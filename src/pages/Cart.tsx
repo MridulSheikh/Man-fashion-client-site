@@ -23,6 +23,9 @@ function Cart() {
         item.length == 0 ?
           <div className='w-screen h-screen flex justify-center items-center'>
             <img src={img} alt="img" className='h-52' />
+            <Link to="/shop">
+              <button className='btn btn-sm font-sans'>get some item's</button>
+            </Link>
           </div>
           :
           <div className='container mx-auto grid grid-cols-2 gap-10'>
@@ -47,7 +50,7 @@ function Cart() {
                 <p className='font-sans'>Total : {total}</p>
                 <p className='font-sans'>Items : {item.length}</p>
                 <p className='font-sans'>Delivery : $15</p>
-                <p className='font-sans'>Pay : {total+15}</p>
+                <p className='font-sans'>Pay : {total + 15}</p>
                 <Link to="/shipping">
                   <button className='btn btn-sm font-sans mt-3'>Procced to shipping</button>
                 </Link>
