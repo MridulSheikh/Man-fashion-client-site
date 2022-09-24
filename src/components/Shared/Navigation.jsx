@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event'
 import { useEffect, useState } from 'react'
+import { AiOutlineDashboard, AiOutlineLogout, AiOutlineMail } from 'react-icons/ai';
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth';
 
@@ -51,12 +52,25 @@ function Navigation() {
                             </label>
                             <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                                 <li>
-                                    <a className="justify-between">
-                                        <span className="badge">{loacluser?.displayName}</span>
+                                    <a className="flex">
+                                        <AiOutlineMail />
+                                        <span className="font-sans font-semibold ml-1">{loacluser?.email}</span>
                                     </a>
                                 </li>
-                                <li><a>Dashboard</a></li>
-                                <li onClick={logout}><a>Logout</a></li>
+                                <li>
+                                    <Link to="/manageuser">
+                                        <div className="flex items-center">
+                                            <AiOutlineDashboard />
+                                            <a className="font-sans font-semibold ml-4">Dashboard</a>
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li onClick={logout} >
+                                    <div className="flex items-center">
+                                        <AiOutlineLogout />
+                                        <a className="font-sans font-semibold">Logout</a>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         :

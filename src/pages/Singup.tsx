@@ -3,7 +3,7 @@ import useAuth from '../hooks/useAuth'
 import { MdCloudUpload } from 'react-icons/md'
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from 'react';
-import { Blocks } from 'react-loader-spinner'
+import { Blocks, RotatingLines } from 'react-loader-spinner'
 
 interface IFormInput {
   email: string;
@@ -19,7 +19,7 @@ function Singup() {
   const [profileimg, setProfileimg] = useState<Blob>();
 
   const onSubmit: SubmitHandler<IFormInput> = data => {
-    singUpwithpass(data.email, data.password, data.displayName, data.address ,profileimg)
+    singUpwithpass(data.email, data.password, data.displayName, data.address, profileimg)
     reset();
   }
 
@@ -63,16 +63,15 @@ function Singup() {
                 <input className="font-sans border py-1 px-3 w-full" type="password" {...register("password", { required: { value: true, message: "password field reqruired" } })} />
               </div>
               {
-                isLoading && <div className='text-center mt-5'>
-                  <Blocks
-                    height="40"
-                    width="400"
-                    color="#4fa94d"
-                    ariaLabel="audio-loading"
-                    wrapperStyle={{}}
-                    wrapperClass="wrapper-class"
+                isLoading && <div className='flex items-center my-2'>
+                  <RotatingLines
+                    strokeColor="grey"
+                    strokeWidth="5"
+                    animationDuration="0.75"
+                    width="35"
                     visible={true}
                   />
+                  <span className="ml-1 font-sans font-semibold">please wait</span>
                 </div>
               }
               <span className='text-red-500 font-sans'>{error}</span>

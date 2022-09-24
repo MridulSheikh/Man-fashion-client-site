@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Blocks } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Blocks, RotatingLines } from "react-loader-spinner";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth"
 
 interface IFormInput {
@@ -9,13 +9,21 @@ interface IFormInput {
 }
 
 function Login() {
-  const {singInwitpass, isLoading, error } = useAuth();
+  const { singInwitpass, isLoading, error, loacluser } = useAuth();
 
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     singInwitpass(data.email, data.password)
   };
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  // @ts-ignore
+  const from = location.state?.from.pathname || '/';
+
+  if (loacluser.email) {
+    navigate(from)
+  }
 
   return (
     <div className="container mx-auto">
@@ -34,16 +42,15 @@ function Login() {
               <input {...register("password", { required: { value: true, message: "password field reqruired" } })} className="font-sans border py-1 px-3 w-full" type="password" />
             </div>
             {
-              isLoading && <div className='text-center mt-5'>
-                <Blocks
-                  height="40"
-                  width="400"
-                  color="#4fa94d"
-                  ariaLabel="audio-loading"
-                  wrapperStyle={{}}
-                  wrapperClass="wrapper-class"
+              isLoading && <div className='flex items-center my-2'>
+                <RotatingLines
+                  strokeColor="grey"
+                  strokeWidth="5"
+                  animationDuration="0.75"
+                  width="35"
                   visible={true}
                 />
+                <span className="ml-1 font-sans font-semibold">please wait</span>
               </div>
             }
             <span className='text-red-500 font-sans'>{error}</span>
