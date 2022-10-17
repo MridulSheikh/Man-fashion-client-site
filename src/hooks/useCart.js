@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 function useCart() {
-
+    const [isComplete, setIsComplete] = useState(false);
    
 
     const addtodatabase = (id, quantity, price, size, img, name) => {
@@ -25,11 +25,13 @@ function useCart() {
             items.push({ id: id, quantity: quantity, price: price, size: size, img: img, name: name })
             localStorage.setItem("cart", JSON.stringify(items))
         }
+        setIsComplete(true);
     }
 
     return {
         addtodatabase,
-
+        isComplete,
+        setIsComplete
     }
 }
 

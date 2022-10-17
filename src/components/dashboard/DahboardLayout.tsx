@@ -4,12 +4,9 @@ import Nav from "./Nav"
 function DahboardLayout({ children }: any) {
     return (
         <AdminRoute>
-            <div className='container mx-auto'>
+            <div className=''>
                 <div>
-                    <Nav />
-                </div>
-                <div>
-                    {children}
+                    <Nav>{children}</Nav>
                 </div>
             </div>
         </AdminRoute>

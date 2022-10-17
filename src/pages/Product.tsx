@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Blocks, RotatingLines } from 'react-loader-spinner';
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Layout from '../components/Shared/Layout';
 import useCart from '../hooks/useCart';
 
@@ -10,7 +10,7 @@ function Product() {
   const [product, setProduct] = useState<any>({});
   const [quantity, setQuantit] = useState<number>(1);
   const [size, setSize] = useState<string>("L");
-  const { addtodatabase } = useCart();
+  const { addtodatabase,  isComplete, setIsComplete } = useCart();
   let total = product.productPrice * quantity;
 
   useEffect(() => {
@@ -41,6 +41,11 @@ function Product() {
     }
   }
 
+ useEffect(()=>{
+  if(isComplete == true){
+    setTimeout(()=>setIsComplete(false),3000)
+  }
+ },[isComplete])
 
   return (
     <Layout>
@@ -100,6 +105,17 @@ function Product() {
                 </div>
               </div>
             </div>
+        }
+        {
+          isComplete &&
+          <div className='fixed top-24 left-1/4 ' onClick={()=>setIsComplete(false)} >
+            <div className="alert alert-success shadow-lg">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span className='flex'>successfully Add {product.productName} <Link to="/cart" ><p className='ml-5 underline'>check out cart</p></Link> </span>
+              </div>
+            </div>
+          </div>
         }
       </div>
     </Layout>

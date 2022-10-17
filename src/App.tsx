@@ -12,6 +12,10 @@ import Shpping from "./pages/Shpping";
 import RequireAuth from "./private/route/RequireAuth";
 import PageNotfound from "./pages/PageNotfound";
 import ManageUser from "./pages/ManageUser";
+import ManageProduct from "./pages/ManageProduct";
+import ManageOrder from "./pages/ManageOrder";
+import Admin from "./pages/Admin";
+import Message from "./pages/Message";
 
 function App() {
   return (
@@ -29,6 +33,10 @@ function App() {
           </RequireAuth>
         } />
         <Route path="/manageuser" element={<ManageUser />} />
+        <Route path="/manageproduct" element={<ManageProduct />} />
+        <Route path="/manageorder" element={<ManageOrder />} />
+        <Route path="/manageadmin" element={<Admin />} />
+        <Route path="/managemessage" element={<Message />} />
         <Route path="*" element={<PageNotfound />} />
       </Routes>
     </div>
