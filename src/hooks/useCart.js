@@ -3,12 +3,12 @@ import { useState } from "react"
 function useCart() {
     const [isComplete, setIsComplete] = useState(false);
    
-
-    const addtodatabase = (id, quantity, price, size, img, name) => {
+    //adding product on cart calling this fuction
+    const addtodatabase = async (id, quantity, price, size, img, name) => {
         const geitem = localStorage.getItem("cart")
         if (geitem) {
             const item = JSON.parse(geitem);
-            const query = item.find(i => i.id == id)
+            const query = await item.find(i => i.id == id)
             if (!query) {
                 item.push({ id: id, quantity: quantity, price: price, size: size, img: img, name: name })
                 localStorage.setItem("cart", JSON.stringify(item))

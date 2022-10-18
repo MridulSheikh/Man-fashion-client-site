@@ -57,7 +57,9 @@ function Navigation() {
                                         <span className="font-sans font-semibold ml-1">{loacluser?.email}</span>
                                     </a>
                                 </li>
-                                <li>
+                                {
+                                    loacluser.admin && 
+                                    <li>
                                     <Link to="/manageuser">
                                         <div className="flex items-center">
                                             <AiOutlineDashboard />
@@ -65,6 +67,7 @@ function Navigation() {
                                         </div>
                                     </Link>
                                 </li>
+                                }
                                 <li onClick={logout} >
                                     <div className="flex items-center">
                                         <AiOutlineLogout />

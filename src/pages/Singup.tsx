@@ -4,6 +4,7 @@ import { MdCloudUpload } from 'react-icons/md'
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from 'react';
 import { Blocks, RotatingLines } from 'react-loader-spinner'
+import Layout from '../components/Shared/Layout';
 
 interface IFormInput {
   email: string;
@@ -29,7 +30,7 @@ function Singup() {
     }
   }
   return (
-    <>
+    <Layout>
       <div className="container mx-auto">
         <div className="w-full flex justify-center">
           <div className="p-5 mt-5 shadow-md ">
@@ -84,7 +85,7 @@ function Singup() {
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   )
 }
 
