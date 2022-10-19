@@ -1,11 +1,11 @@
 import React from 'react'
-import DahboardLayout from '../components/dashboard/DahboardLayout'
+import ProductLayout from '../components/dashboard/ProductLayout'
 
 function ManageProduct() {
   return (
-    <DahboardLayout>
-        <div>manage product</div>
-    </DahboardLayout>
+    <ProductLayout>
+            
+    </ProductLayout>
   )
 }
 

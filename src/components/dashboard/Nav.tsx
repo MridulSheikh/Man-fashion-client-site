@@ -5,7 +5,7 @@ import {GrUserAdmin} from 'react-icons/gr'
 import {FiLogOut} from 'react-icons/fi'
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth'
-import { AiFillMessage } from 'react-icons/ai';
+import { AiFillMessage, AiOutlineRollback } from 'react-icons/ai';
 
 function Nav({ children }: any) {
   const { loacluser, logout } = useAuth();
@@ -82,6 +82,14 @@ function Nav({ children }: any) {
                 <span>logout</span>
               </div>
             </li>
+            <Link to="/">
+            <li>
+              <div className='flex items-center'>
+                <AiOutlineRollback />
+                <span>Back to home</span>
+              </div>
+            </li>
+          </Link>
         </ul>
 
       </div>
