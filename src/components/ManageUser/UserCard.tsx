@@ -46,8 +46,8 @@ function UserCard({ email, displayName, imgUrl, admin, route, callfunc }: props)
         <>
             <div className='text-center m-6'>
                 <div>
-                    <div className="w-16 rounded-full m-auto">
-                        <img src={imgUrl} alt="profile img" className='rounded-full' />
+                    <div className="w-16 h-16 rounded-full flex m-auto overflow-hidden">
+                        <img src={imgUrl} alt="profile img" height="100%" />
                     </div>
                 </div>
                 <div className='mt-4'>

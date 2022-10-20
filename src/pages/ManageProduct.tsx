@@ -76,7 +76,7 @@ function ManageProduct() {
       }
     }
   }
-
+ 
   return (
     <DahboardLayout>
       <div className='flex px-16 py-2 sticky top-0 justify-between shadow-md z-40 bg-white '>
@@ -119,7 +119,7 @@ function ManageProduct() {
                 {
                   product.map(pr => <div className='grid grid-cols-5 gap-2 text-center shadow-sm rounded-md p-4 my-5 border'>
                     <div>
-                      <p>{pr.productName.substring(0, 17)}....</p>
+                      <p>{pr?.productName?.substring(0, 17)}....</p>
                     </div>
                     <div className="w-5">
                       <img src={pr.productImg} alt="profile img" />
